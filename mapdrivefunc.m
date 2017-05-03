@@ -69,3 +69,46 @@ for i=1:m
     end
 end
 end
+
+
+%notes:
+%the map file is imported as a vector that is 20000-130000 variables long,
+%depending on the map size. Thankfully there is some structure to this
+%mess, which I will go over. 
+%the first 1252 variables you dont want to change. Changing these will
+%break the map. From 1252-1319 is a bunch of zeros that dont do anything.
+%Go ahead and change these, but don't expect anything to happen. From 1319
+%onward the the data for each tile is encoded. Each tile has 8 variables
+%that can be edited. These variables corespond to: Climate:
+%resource: forest cover etc: rivers: terrain: wonders: unkown (probably 
+%roads). To change the tile you subtract or add from the orignal value, 
+%the amount you subtract determines the change.
+%example: make a flat desert tile with iron, a jungle and barringer crater
+%on the first tile
+%map(1319)=map(1319)-4
+%map(1319+1)=map(1319)-10
+%map(1319+2)=map(1319)-2
+%map(1319+5)=map(1319)-10
+%if you want to change the nth tile add 8*n to the index
+%example;
+%map(1319+8*7)=map(1319+8*7)-1 the seventh tile should be coast.
+%here is all of the info about what change in variable corresponds to what
+%change in terrain. There are probably mistakes in this list, and it is not
+%complete.
+%for the first variable:
+%-0 gives ocean, -1 gives coast, -2 gives snow, -3 gives tundra -4 gives
+%desert, -5 gives plains, -6+ gives grassland. for tile 1319+8*i
+%2nd variable: -1 is uranium, -2 is aluminium -10 is iron. I didnt check
+%everything. I think addition gives luxuries. for tile map(1319+8*n+1)
+%third variable: -1 is forest: -2 is fl plains, -3 is oasis, -4 is marsh
+%-5 is jungle. -6 is ice. +1 is oasis. for tile map(1319+8*n+2)
+%fourth Variable: controls rivers, bit im not sure how. tile
+%map(1319+8*n+3)
+%fifth variable: +4 gives mountains. tile  map(1319+8*n+4)
+%sixth Variable: wonderss. -10 gives barringer crater  map(1319+8*n+5)
+%For a 80 by 80 map the map vector is 115651 variables long. So far I have
+%only covered 52519 variables of that length. I suspect the remainder
+%control cities, units etc but I have not checked this guess.
+
+
+
